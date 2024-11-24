@@ -1,0 +1,101 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.1'
+	id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+
+	// 테스트 환경에서 Lombok 설정
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.33' // Ensure to use the latest stable version
+
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+//   testImplementation 'org.hamcrest:hamcrest-core:2.x.x' // Replace 2.x.x with the version you are using
+//   testImplementation 'org.hamcrest:hamcrest-library:2.x.x'
+
+	implementation 'org.hibernate:hibernate-core:6.2.4.Final'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// security_config
+	// JSON 문자열 생성
+	implementation 'com.google.code.gson:gson:2.10.1'
+
+	// oauth_login
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.session:spring-session-core'
+
+
+	// jwt string
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	//썸네일 생성용 이미지 리사이저
+	implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.17'
+
+	//jsp 파일 사용
+	implementation 'javax.servlet:jstl:1.2'
+	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+
+	// smtp_email
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//web-client
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	//Json 파일 DB 저장
+	implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.8.2'
+	implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.15.0'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+	implementation group: 'org.json', name: 'json', version: '20240303'
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+
+	tasks.withType(JavaCompile) {
+		options.compilerArgs << '-parameters'
+	}
+}
