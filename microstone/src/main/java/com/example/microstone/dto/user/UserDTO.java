@@ -1,6 +1,7 @@
 package com.example.microstone.dto.user;
 
 import com.example.microstone.domain.Enum.Role;
+import com.example.microstone.domain.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -31,8 +32,6 @@ public class UserDTO implements UserDetails {
 
     private String nickname;
 
-//    private boolean social;
-
     private String email;
 
     private Role role;
@@ -54,19 +53,23 @@ public class UserDTO implements UserDetails {
         return password;
     }
 
-//    public Boolean getSocial(){return social;}
-
-    //token_login_config
-    public Map<String, Object> getClaims() {
-        Map<String, Object> dataMap = new HashMap<>();
-
-        dataMap.put("user_id", user_id);
-        dataMap.put("password", password);
-        dataMap.put("nickname", nickname);
-//        dataMap.put("social", social);
-        dataMap.put("email", email);
-        dataMap.put("role", role);
-
-        return dataMap;
+    // Map 데이터 반환
+    // JWT 문자열 payload
+    public Map<String, Object> getDataMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("user_id", user_id);
+        map.put("nickname", nickname);
+        map.put("email", email);
+        map.put("role", role);
+        return map;
     }
+
+    public UserDTO(User user) {
+        this.user_id = user.getUser_id();
+        this.password = user.getPassword();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+        this.role = user.getRole();
+    }
+
 }

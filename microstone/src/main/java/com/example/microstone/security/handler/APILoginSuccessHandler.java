@@ -36,8 +36,6 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
 
         UserDTO userDTO = (UserDTO) authentication.getPrincipal();
 
-        //token_login_config
-//        Map<String, Object> claims = userDTO.getClaims();
 
         // 패스워드를 제외한 사용자 정보만 포함하는 새로운 Map 생성
         Map<String, Object> claims = new HashMap<>();

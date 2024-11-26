@@ -45,9 +45,9 @@ public class CustomSecurityConfig {
                     configurationSource(corsConfigurationSource());
         });
 
-        // API 서버는 무상태를 기본으로 사용하기 때문에 서버 내부에서 세션을 생성하지 않도록 하는게 일반적이지만.. 미안하게됐다
+        // API 서버는 무상태로 유지
         //token_login_config
-        http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .maximumSessions(1));
 
         // API 서버 작성시 CSRF 토큰을 사용하지 않는 것이 일반적

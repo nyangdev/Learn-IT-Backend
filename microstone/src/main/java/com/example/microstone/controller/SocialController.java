@@ -36,7 +36,6 @@ public class SocialController {
             userService.cancelDeactivate(userDTO.getUser_id());
         }
 
-//        Map<String, Object> claims = userDTO.getClaims();
         Map<String, Object> claims = new HashMap<>();
 
         Long uid = getUidByUserId(userDTO.getUser_id()); // user_id를 기반으로 uid를 가져옴
@@ -66,7 +65,6 @@ public class SocialController {
             userService.cancelDeactivate(userDTO.getUser_id());
         }
 
-//        Map<String, Object> claims = userDTO.getClaims();
 
         Map<String, Object> claims = new HashMap<>();
         Long uid = getUidByUserId(userDTO.getUser_id()); // user_id를 기반으로 uid를 가져옴
