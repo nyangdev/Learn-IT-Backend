@@ -3,7 +3,7 @@ package com.example.microstone.exception.user;
 import lombok.Getter;
 
 @Getter
-public class UserTaskException {
+public class UserTaskException extends RuntimeException {
     // user 관련된 모든 예외 의미
     private String message;
     private int code;

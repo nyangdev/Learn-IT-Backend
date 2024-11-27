@@ -6,6 +6,7 @@ import com.example.microstone.domain.Enum.Occupation;
 import com.example.microstone.domain.Enum.Role;
 import com.example.microstone.domain.User;
 import com.example.microstone.dto.user.*;
+import com.example.microstone.exception.user.UserException;
 import com.example.microstone.repository.DeactivatedUserRepository;
 import com.example.microstone.repository.EjectionRepository;
 import com.example.microstone.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,6 +33,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -391,5 +394,18 @@ public class UserServiceImpl implements UserService {
         user.setDepartment(userUpdateDTO.getDepartment());
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDTO read(String user_id, String password) {
+        Optional<User> result = userRepository.findByUserId(user_id);
+
+        User user = result.orElseThrow(UserException.NOT_FOUND::get);
+
+        if(!passwordEncoder.matches(password, user.getPassword())) {
+            throw UserException.BAD_CREDENTIALS.get();
+        }
+
+        return new UserDTO(user);
     }
 }

@@ -47,6 +47,12 @@ public class TokenController {
     @PostMapping("/make")
     public ResponseEntity<Map<String, String>> makeToken(@RequestBody UserDTO userDTO) {
 
+        log.info("make token..............");
+
+        UserDTO userDTOResult = userService.read(userDTO.getUser_id(), userDTO.getPassword());
+
+        log.info(userDTOResult);
+
         return null;
     }
 }

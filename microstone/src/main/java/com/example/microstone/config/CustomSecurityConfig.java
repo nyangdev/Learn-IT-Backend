@@ -1,6 +1,5 @@
 package com.example.microstone.config;
 
-import com.example.microstone.security.filter.JWTCheckFilter;
 import com.example.microstone.security.handler.APILoginFailHandler;
 import com.example.microstone.security.handler.APILoginSuccessHandler;
 import com.example.microstone.security.handler.CustomAccessDeniedHandler;
@@ -71,16 +70,16 @@ public class CustomSecurityConfig {
 
         // JWT 체크
         //token_login_config
-        http.addFilterBefore(new JWTCheckFilter(),
-                UsernamePasswordAuthenticationFilter.class);
-
-        //token_login_config
-        http.exceptionHandling(config -> {
-            config.accessDeniedHandler(new CustomAccessDeniedHandler());
-        });
-
-        http.headers(headers -> headers
-                .httpStrictTransportSecurity().disable());
+//        http.addFilterBefore(new JWTCheckFilter(),
+//                UsernamePasswordAuthenticationFilter.class);
+//
+//        //token_login_config
+//        http.exceptionHandling(config -> {
+//            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+//        });
+//
+//        http.headers(headers -> headers
+//                .httpStrictTransportSecurity().disable());
 
 
         return http.build();

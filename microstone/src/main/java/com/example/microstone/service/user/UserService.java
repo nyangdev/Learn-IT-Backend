@@ -51,4 +51,7 @@ public interface UserService {
 
     public void updateUser(UserUpdateDTO userUpdateDTO);
 
+    // 사용자 정보 가져오기
+    public UserDTO read(String user_id, String password);
+
 }
