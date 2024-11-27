@@ -34,7 +34,7 @@ public class CustomSecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, HttpSecurity httpSecurity) throws Exception {
 
         // 시큐리티 실행 확인 로그
         log.info("------------------security config------------------");
@@ -54,13 +54,19 @@ public class CustomSecurityConfig {
         http.csrf(config -> config.disable());
 
         // 로그인 연결
-        http.formLogin(config -> {
-            config.loginPage("/api/user/signin")
-                    .usernameParameter("user_id")
-                    .passwordParameter("password")
-                    .successHandler(loginSuccessHandler)
-                    .failureHandler(new APILoginFailHandler());
+//        http.formLogin(config -> {
+//            config.loginPage("/api/user/signin")
+//                    .usernameParameter("user_id")
+//                    .passwordParameter("password")
+//                    .successHandler(loginSuccessHandler)
+//                    .failureHandler(new APILoginFailHandler());
+//        });
+
+        httpSecurity.formLogin(httpSecurityFormLoginConfigurer -> {
+            httpSecurityFormLoginConfigurer.disable();
         });
+
+        httpSecurity.logout(config -> config.disable());
 
 
         // JWT 체크
