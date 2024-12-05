@@ -3,7 +3,6 @@ package com.example.microstone.controller;
 import com.example.microstone.dto.user.UserDTO;
 import com.example.microstone.repository.UserRepository;
 import com.example.microstone.service.user.UserService;
-import com.example.microstone.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,11 +44,11 @@ public class SocialController {
         claims.put("email", userDTO.getEmail());
         claims.put("nickname", userDTO.getNickname());
 
-        String jwtAccessToken = JWTUtil.generateToken(claims, 30000);
-        String jwtRefreshToken = JWTUtil.generateToken(claims, 60*24);
-
-        claims.put("access_token", jwtAccessToken);
-        claims.put("refresh_token", jwtRefreshToken);
+//        String jwtAccessToken = JWTUtil.generateToken(claims, 30000);
+//        String jwtRefreshToken = JWTUtil.generateToken(claims, 60*24);
+//
+//        claims.put("access_token", jwtAccessToken);
+//        claims.put("refresh_token", jwtRefreshToken);
 
         return claims;
     }
@@ -74,11 +73,11 @@ public class SocialController {
         claims.put("email", userDTO.getEmail());
         claims.put("nickname", userDTO.getNickname());
 
-        String jwtAccessToken = JWTUtil.generateToken(claims, 10);
-        String jwtRefreshToken = JWTUtil.generateToken(claims, 60 * 24);
-
-        claims.put("access_token", jwtAccessToken);
-        claims.put("refresh_token", jwtRefreshToken);
+//        String jwtAccessToken = JWTUtil.generateToken(claims, 10);
+//        String jwtRefreshToken = JWTUtil.generateToken(claims, 60 * 24);
+//
+//        claims.put("access_token", jwtAccessToken);
+//        claims.put("refresh_token", jwtRefreshToken);
 
         return claims;
     }

@@ -1,15 +1,14 @@
 package com.example.microstone.config;
 
-import com.example.microstone.security.handler.APILoginFailHandler;
-import com.example.microstone.security.handler.APILoginSuccessHandler;
-import com.example.microstone.security.handler.CustomAccessDeniedHandler;
+import com.example.microstone.security.filter.JWTCheckFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,10 +26,15 @@ import java.util.Arrays;
 @EnableWebSecurity
 @Log4j2
 @RequiredArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true)
 public class CustomSecurityConfig {
 
-    private final APILoginSuccessHandler loginSuccessHandler;
+    private JWTCheckFilter jwtCheckFilter;
 
+    @Autowired
+    private void setJwtCheckFilter(final JWTCheckFilter jwtCheckFilter) {
+        this.jwtCheckFilter = jwtCheckFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, HttpSecurity httpSecurity) throws Exception {
@@ -52,34 +56,14 @@ public class CustomSecurityConfig {
         // API 서버 작성시 CSRF 토큰을 사용하지 않는 것이 일반적
         http.csrf(config -> config.disable());
 
-        // 로그인 연결
-//        http.formLogin(config -> {
-//            config.loginPage("/api/user/signin")
-//                    .usernameParameter("user_id")
-//                    .passwordParameter("password")
-//                    .successHandler(loginSuccessHandler)
-//                    .failureHandler(new APILoginFailHandler());
-//        });
-
         httpSecurity.formLogin(httpSecurityFormLoginConfigurer -> {
             httpSecurityFormLoginConfigurer.disable();
         });
 
         httpSecurity.logout(config -> config.disable());
 
-
-        // JWT 체크
-        //token_login_config
-//        http.addFilterBefore(new JWTCheckFilter(),
-//                UsernamePasswordAuthenticationFilter.class);
-//
-//        //token_login_config
-//        http.exceptionHandling(config -> {
-//            config.accessDeniedHandler(new CustomAccessDeniedHandler());
-//        });
-//
-//        http.headers(headers -> headers
-//                .httpStrictTransportSecurity().disable());
+        // jwtCheckFilter를 UsernamePasswordAuthenticationFilter 앞에 두기
+        httpSecurity.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();

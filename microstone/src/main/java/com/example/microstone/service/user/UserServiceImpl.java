@@ -400,11 +400,20 @@ public class UserServiceImpl implements UserService {
     public UserDTO read(String user_id, String password) {
         Optional<User> result = userRepository.findByUserId(user_id);
 
-        User user = result.orElseThrow(UserException.NOT_FOUND::get);
+        User user = result.orElseThrow(UserException.BAD_CREDENTIALS::get);
 
         if(!passwordEncoder.matches(password, user.getPassword())) {
             throw UserException.BAD_CREDENTIALS.get();
         }
+
+        return new UserDTO(user);
+    }
+
+    @Override
+    public UserDTO getByUserId(String user_id) {
+        Optional<User> result = userRepository.findByUserId(user_id);
+
+        User user = result.orElseThrow(UserException.NOT_FOUND::get);
 
         return new UserDTO(user);
     }

@@ -54,4 +54,7 @@ public interface UserService {
     // 사용자 정보 가져오기
     public UserDTO read(String user_id, String password);
 
+    // user_id에 해당하는 사용자 가져오기
+    public UserDTO getByUserId(String user_id);
+
 }
